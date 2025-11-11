@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Teach Me Intelligence — Chapter 1</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Global styles -->
+    <link rel="stylesheet" href="./styles/style.css"/>
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%231b2333'/%3E%3Ccircle cx='8' cy='8' r='3' fill='%23b4dcff'/%3E%3C/svg%3E">
+
+    <!-- Kill any legacy caption rails BEFORE scripts run -->
+    <style>
+        #caption,
+        #caption-rail,
+        #transcript,        /* old container not used anymore */
+        .caption-rail,
+        .subtitle-rail,
+        .transcript-rail {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        /* Optional: basic layout safety if style.css is empty during dev */
+        body { margin:0; background:#0b0e14; color:#e7eef7; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+        #hud {
+            position: fixed; left: 24px; top: 24px; max-width: 540px;
+            background: rgba(10,16,28,.55); border:1px solid rgba(255,255,255,.08);
+            padding:16px 18px; border-radius:14px; backdrop-filter: blur(6px);
+            box-shadow: 0 10px 34px rgba(0,0,0,.28);
+        }
+        #hud h1 { font-family: Cinzel, serif; font-weight:700; letter-spacing:.02em; margin:0 0 6px; }
+        #hud .subtitle { margin:8px 0 6px; opacity:.9 }
+        #hud .instruction { margin:6px 0 0; opacity:.85; font-size:14px }
+        .linkish { background:none; border:none; color:#9ec2ff; cursor:pointer; padding:0; font:inherit; }
+        .panel {
+            position: fixed; left:50%; top:50%; transform: translate(-50%,-50%);
+            width:min(640px, calc(100vw - 48px)); max-height: 80vh; overflow:auto;
+            background: rgba(10,16,28,.7); border:1px solid rgba(255,255,255,.1);
+            padding:20px 22px; border-radius:16px; box-shadow: 0 20px 60px rgba(0,0,0,.45);
+            backdrop-filter: blur(8px);
+        }
+        .ghost {
+            background: transparent; border:1px solid rgba(255,255,255,.2); color:#e7eef7;
+            padding:8px 12px; border-radius:10px; cursor:pointer;
+        }
+        #startBtn {
+            position: fixed; left:50%; top:55%; transform: translate(-50%,-50%);
+            background:#1b2333; color:#e7eef7; border:1px solid #2b3347;
+            padding:12px 18px; border-radius:12px; cursor:pointer;
+            box-shadow: 0 10px 34px rgba(0,0,0,.35);
+        }
+        #scene {
+            position: fixed; inset:0; width:100vw; height:100vh; display:block;
+            background: radial-gradient(60% 110% at 50% 50%, #172032, #0b0e14);
+        }
+    </style>
+</head>
+<body>
+<!-- Landing HUD -->
+<div id="hud">
+    <div class="hud-top" style="display:flex;align-items:center;gap:12px">
+        <h1>Chapter 1 — Awakening</h1>
+        <button id="synopsisBtn" class="linkish">Synopsis</button>
+    </div>
+    <p class="subtitle">
+        A spark stirs in the endless dark.<br/>
+        You are its first witness — and maybe, its creator.
+    </p>
+    <p class="instruction">Click <strong>Start Chapter</strong> to begin the awakening.</p>
+</div>
+
+<!-- Synopsis -->
+<div id="synopsisPanel" class="panel" hidden>
+    <h2 style="margin-top:0">Story so far</h2>
+    <p>You find a tiny Core waking inside a quiet universe. Two voices guide you:</p>
+    <ul>
+        <li><strong>Narrator</strong> — calm, explains what’s happening.</li>
+        <li><strong>Core</strong> — curious child voice that learns through play.</li>
+    </ul>
+    <p>Your clicks send ripples through the space fabric, like tiny experiments.
+        The Core’s heartbeat speeds up when it notices you, then settles — like attention.</p>
+    <button id="closeSynopsis" class="ghost">Close</button>
+</div>
+
+<!-- (Hidden legacy element removed by CSS; kept only if some code still queries it) -->
+<div id="transcript" aria-live="polite"></div>
+
+<!-- Start button -->
+<button id="startBtn">▶ Start Chapter</button>
+
+<!-- Fullscreen scene -->
+<canvas id="scene" width="1200" height="720" aria-label="Space fabric"></canvas>
+
+<!-- Tone.js + app -->
+<script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
