@@ -1,0 +1,26 @@
+# Node / tooling
+node_modules/
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+# Environment & secrets
+.env
+*.env
+/.env.*
+
+# Build / cache / temp
+.cache/
+cache/
+cache/tts/
+dist/
+build/
+*.log
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# System
+Thumbs.db

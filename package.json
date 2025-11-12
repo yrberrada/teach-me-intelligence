@@ -2,17 +2,20 @@
   "name": "teach-me-intelligence",
   "version": "1.0.0",
   "description": "Interactive AI learning experience — Chapter 1: Awakening",
-  "main": "index.html",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "start": "npx http-server -p 5173 -c-1 --no-dotfiles",
-    "dev": "npx http-server -p 5173",
-    "build": "echo 'Static project — no build step required'"
+    "dev": "nodemon server/index.js",
+    "start": "node server/index.js",
+    "warm": "node server/warm-cache.js"
   },
   "dependencies": {
-    "tone": "^14.8.49"
+    "ajv": "^8.17.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "node-fetch": "^3.3.2"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "private": true
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
 }

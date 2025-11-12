@@ -1,0 +1,6 @@
+{
+  "chapter": "1",
+  "scene": "awakening",
+  "tone": "curious",
+  "allowed_intents": ["greet", "ask_light", "ask_warmth", "reflect"]
+}

@@ -10,7 +10,7 @@ body {
     overflow: hidden;
 }
 
-/* Title uses Cinzel for that cinematic feel */
+/* Title */
 h1, h2 { font-family: Cinzel, 'Times New Roman', serif; letter-spacing: .3px; }
 
 /* HUD */
@@ -29,7 +29,7 @@ h1, h2 { font-family: Cinzel, 'Times New Roman', serif; letter-spacing: .3px; }
 .linkish { background:none; border:0; color:#9fc1ff; cursor:pointer; padding:4px 8px; border-radius:8px; }
 .linkish:hover { background: rgba(158,190,255,.12); }
 
-/* Synopsis */
+/* Synopsis panel */
 .panel {
     position: fixed; left:24px; top:120px; z-index:12; max-width: 420px;
     background: linear-gradient(180deg, rgba(20,26,40,.9), rgba(18,24,38,.8));
@@ -58,9 +58,34 @@ h1, h2 { font-family: Cinzel, 'Times New Roman', serif; letter-spacing: .3px; }
 #startBtn.removed { display:none; }
 
 /* Fullscreen canvas */
-#scene { position: fixed; inset:0; width:100vw; height:100vh; display:block; pointer-events:none; }
+#scene {
+    position: fixed; inset:0; width:100vw; height:100vh; display:block; pointer-events:none;
+}
+#scene.cooldown { cursor: not-allowed; } /* subtle tactile feedback */
 
-/* Cinematic transcript */
+/* Idle hint overlay */
+#idleHint {
+    position: fixed; left: 50%; top: 62%; transform: translate(-50%, -50%);
+    z-index: 13;
+    padding: 10px 14px; border-radius: 12px;
+    border: 1px solid rgba(160,190,255,.25);
+    background: rgba(14,20,32,.72);
+    box-shadow: 0 16px 50px rgba(0,0,0,.45);
+    color: #cfe1ff;
+    font-size: 14.5px; letter-spacing: .2px;
+    backdrop-filter: blur(6px);
+    user-select: none;
+    cursor: pointer;
+    animation: idlePulse 2.4s ease-in-out infinite;
+}
+#idleHint[hidden] { display: none; }
+@keyframes idlePulse {
+    0%   { box-shadow: 0 14px 40px rgba(0,0,0,.40); transform: translate(-50%,-50%) scale(1.00); }
+    50%  { box-shadow: 0 20px 60px rgba(0,0,0,.55); transform: translate(-50%,-50%) scale(1.03); }
+    100% { box-shadow: 0 14px 40px rgba(0,0,0,.40); transform: translate(-50%,-50%) scale(1.00); }
+}
+
+/* Transcript (cinematic rail) */
 #transcript {
     position: fixed; left:50%; bottom:42px; transform: translateX(-50%);
     z-index: 12;
@@ -71,21 +96,17 @@ h1, h2 { font-family: Cinzel, 'Times New Roman', serif; letter-spacing: .3px; }
     padding: 14px 18px;
     box-shadow: 0 18px 70px rgba(0,0,0,.45);
     backdrop-filter: blur(6px);
-    pointer-events: none;  /* visuals stay interactive */
+    pointer-events: none;
 }
 .line { opacity: .22; transform: translateY(6px); transition: opacity .35s ease, transform .35s ease; }
 .line.show { opacity: 1; transform: translateY(0); }
-
 .spk { font-weight: 600; color:#cfe1ff; margin-right: 8px; }
 .spk.narr { color:#b9d1ff; font-family: Cinzel, serif; }
 .spk.core  { color:#ffe3ac; }
-
 .txt { font-size: 18px; letter-spacing:.2px; }
-
-/* current line bigger */
 .line.current .txt { font-size: 20px; }
 
-/* utilities */
+/* Utilities */
 .hide   { opacity:0; transition: opacity .3s ease; }
 .fading { opacity:0; transition: opacity .3s ease; }
 .removed{ display:none !important; }

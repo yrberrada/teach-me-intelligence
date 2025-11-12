@@ -16,49 +16,67 @@
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%231b2333'/%3E%3Ccircle cx='8' cy='8' r='3' fill='%23b4dcff'/%3E%3C/svg%3E">
 
-    <!-- Kill any legacy caption rails BEFORE scripts run -->
+    <!-- Kill legacy caption rails BEFORE scripts run (do NOT hide #transcript) -->
     <style>
-        #caption,
-        #caption-rail,
-        #transcript,        /* old container not used anymore */
-        .caption-rail,
-        .subtitle-rail,
-        .transcript-rail {
-            display: none !important;
-            visibility: hidden !important;
+        #caption,#caption-rail,.caption-rail,.subtitle-rail,.transcript-rail{
+            display:none!important;visibility:hidden!important
         }
-        /* Optional: basic layout safety if style.css is empty during dev */
-        body { margin:0; background:#0b0e14; color:#e7eef7; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-        #hud {
-            position: fixed; left: 24px; top: 24px; max-width: 540px;
-            background: rgba(10,16,28,.55); border:1px solid rgba(255,255,255,.08);
-            padding:16px 18px; border-radius:14px; backdrop-filter: blur(6px);
-            box-shadow: 0 10px 34px rgba(0,0,0,.28);
+
+        /* Base fallback (your style.css may override) */
+        body{margin:0;background:#0b0e14;color:#e7eef7;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+        #scene{position:fixed;inset:0;width:100vw;height:100vh;display:block;background:radial-gradient(60% 110% at 50% 50%,#172032,#0b0e14)}
+
+        /* HUD — larger and clearer */
+        #hud{
+            position:fixed;left:28px;top:28px;max-width:720px;
+            background:rgba(10,16,28,.60);border:1px solid rgba(255,255,255,.10);
+            padding:20px 22px;border-radius:14px;backdrop-filter:blur(8px);
+            box-shadow:0 14px 40px rgba(0,0,0,.35)
         }
-        #hud h1 { font-family: Cinzel, serif; font-weight:700; letter-spacing:.02em; margin:0 0 6px; }
-        #hud .subtitle { margin:8px 0 6px; opacity:.9 }
-        #hud .instruction { margin:6px 0 0; opacity:.85; font-size:14px }
-        .linkish { background:none; border:none; color:#9ec2ff; cursor:pointer; padding:0; font:inherit; }
-        .panel {
-            position: fixed; left:50%; top:50%; transform: translate(-50%,-50%);
-            width:min(640px, calc(100vw - 48px)); max-height: 80vh; overflow:auto;
-            background: rgba(10,16,28,.7); border:1px solid rgba(255,255,255,.1);
-            padding:20px 22px; border-radius:16px; box-shadow: 0 20px 60px rgba(0,0,0,.45);
-            backdrop-filter: blur(8px);
+        #hud h1{font-family:Cinzel,serif;font-weight:700;letter-spacing:.02em;margin:0 0 8px;font-size:28px}
+        #hud .pill{
+            display:inline-block;margin:.25rem 0 .5rem 0;padding:4px 10px;border-radius:999px;
+            font-size:12px;letter-spacing:.04em;text-transform:uppercase;
+            color:#bcd6ff;background:rgba(156,194,255,.12);border:1px solid rgba(156,194,255,.25)
         }
-        .ghost {
-            background: transparent; border:1px solid rgba(255,255,255,.2); color:#e7eef7;
-            padding:8px 12px; border-radius:10px; cursor:pointer;
+        #hud .subtitle{margin:8px 0 10px;opacity:.96;line-height:1.6;font-size:16.5px}
+        #hud .mapping{margin:10px 0 0;opacity:.92;font-size:15px;line-height:1.55}
+        #hud .mapping li{margin:.25rem 0}
+        #hud .instruction{margin:10px 0 0;opacity:.88;font-size:14.5px}
+        .linkish{background:none;border:none;color:#9ec2ff;cursor:pointer;padding:0;font:inherit}
+
+        /* Synopsis modal */
+        .panel{
+            position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+            width:min(780px,calc(100vw - 56px));max-height:82vh;overflow:auto;
+            background:rgba(10,16,28,.72);border:1px solid rgba(255,255,255,.12);
+            padding:24px 26px;border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.5);
+            backdrop-filter:blur(10px)
         }
-        #startBtn {
-            position: fixed; left:50%; top:55%; transform: translate(-50%,-50%);
-            background:#1b2333; color:#e7eef7; border:1px solid #2b3347;
-            padding:12px 18px; border-radius:12px; cursor:pointer;
-            box-shadow: 0 10px 34px rgba(0,0,0,.35);
+        .panel h2{margin:0 0 10px;font-family:Cinzel,serif}
+        .panel p{font-size:16.5px;line-height:1.65}
+        .panel ul{padding-left:22px}
+        .panel li{margin:.35rem 0}
+        .ghost{background:transparent;border:1px solid rgba(255,255,255,.25);color:#e7eef7;padding:10px 14px;border-radius:12px;cursor:pointer}
+
+        /* Start button — bigger with soft pulse */
+        #startBtn{
+            position:fixed;left:50%;top:58%;transform:translate(-50%,-50%);
+            background:#1b2333;border:1px solid #2b3347;color:#e9f1ff;
+            padding:16px 24px;border-radius:14px;cursor:pointer;
+            font-size:18px;font-weight:600;letter-spacing:.01em;
+            box-shadow:0 16px 48px rgba(0,0,0,.45);
+            transition:transform .18s ease,box-shadow .18s ease,background .18s ease
         }
-        #scene {
-            position: fixed; inset:0; width:100vw; height:100vh; display:block;
-            background: radial-gradient(60% 110% at 50% 50%, #172032, #0b0e14);
+        #startBtn:hover{transform:translate(-50%,-50%) scale(1.03);background:#22304a}
+        @keyframes softPulse{0%{box-shadow:0 16px 48px rgba(0,0,0,.45)}50%{box-shadow:0 22px 60px rgba(0,0,0,.55)}100%{box-shadow:0 16px 48px rgba(0,0,0,.45)}}
+        #startBtn{animation:softPulse 2.6s ease-in-out infinite}
+
+        /* Small screens */
+        @media (max-width:640px){
+            #hud{max-width:92vw;left:4vw;right:4vw}
+            #hud h1{font-size:22px}
+            #startBtn{top:62%;font-size:16px;padding:14px 18px}
         }
     </style>
 </head>
@@ -69,31 +87,52 @@
         <h1>Chapter 1 — Awakening</h1>
         <button id="synopsisBtn" class="linkish">Synopsis</button>
     </div>
+
+    <div class="pill">Metaphor: how an AI learns</div>
+
     <p class="subtitle">
-        A spark stirs in the endless dark.<br/>
-        You are its first witness — and maybe, its creator.
+        You wake a tiny <strong>Core</strong> inside a quiet universe. The Core is a stand-in for an AI model.
+        Your clicks are like <em>training data</em>. Repetition creates <em>patterns</em>. Patterns turn into <em>recognition</em>.
+        With guidance from the Narrator, the Core begins to find <em>meaning</em>.
     </p>
-    <p class="instruction">Click <strong>Start Chapter</strong> to begin the awakening.</p>
+
+    <ul class="mapping">
+        <li><strong>Your click</strong> → a data point</li>
+        <li><strong>Repeated clicks</strong> → a pattern the system can learn</li>
+        <li><strong>System response</strong> → recognition and feedback</li>
+        <li><strong>Growing clarity</strong> → meaning emerging from signals</li>
+    </ul>
+
+    <p class="instruction">
+        Best with headphones. Click <strong>Start Chapter</strong> to begin.
+    </p>
 </div>
 
 <!-- Synopsis -->
 <div id="synopsisPanel" class="panel" hidden>
-    <h2 style="margin-top:0">Story so far</h2>
-    <p>You find a tiny Core waking inside a quiet universe. Two voices guide you:</p>
+    <h2>Story so far</h2>
+    <p>
+        This experience uses story to explain a core idea from AI: models learn from repeated signals.
+        The <strong>Core</strong> is like a newborn model that can notice changes but doesn’t know what they mean yet.
+        When you interact, it receives input, the system reinforces patterns, and recognition slowly appears.
+    </p>
     <ul>
-        <li><strong>Narrator</strong> — calm, explains what’s happening.</li>
-        <li><strong>Core</strong> — curious child voice that learns through play.</li>
+        <li><strong>Narrator</strong> — explains what the system is doing in simple words.</li>
+        <li><strong>Core</strong> — a curious, child-like voice that reacts to your “data.”</li>
     </ul>
-    <p>Your clicks send ripples through the space fabric, like tiny experiments.
-        The Core’s heartbeat speeds up when it notices you, then settles — like attention.</p>
+    <p><strong>Try:</strong> click slowly, then faster; pause and listen; notice how heartbeat, light, and voice change.
+        That is the metaphor for how attention and learning adjust to input.</p>
     <button id="closeSynopsis" class="ghost">Close</button>
 </div>
 
-<!-- (Hidden legacy element removed by CSS; kept only if some code still queries it) -->
+<!-- Transcript (kept visible) -->
 <div id="transcript" aria-live="polite"></div>
 
 <!-- Start button -->
 <button id="startBtn">▶ Start Chapter</button>
+
+<!-- Idle hint (clickable) -->
+<div id="idleHint" hidden>Click to wake the Core</div>
 
 <!-- Fullscreen scene -->
 <canvas id="scene" width="1200" height="720" aria-label="Space fabric"></canvas>
@@ -101,5 +140,7 @@
 <!-- Tone.js + app -->
 <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
 <script type="module" src="./src/main.js"></script>
+
+<!-- Dev “Ask Core” overlay was intentionally removed to keep click-only flow -->
 </body>
 </html>
